@@ -22,10 +22,10 @@ database.connect();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-	cors({
+	cors(/* {
 		origin:"https://study-notion-frontend-theta.vercel.app/",
 		credentials:true,
-	})
+	} */)
 )
 
 app.use(
