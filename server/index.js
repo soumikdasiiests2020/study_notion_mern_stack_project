@@ -21,12 +21,21 @@ database.connect();
 //middlewares
 app.use(express.json());
 app.use(cookieParser());
+// Allow frontend origins: Vercel app + localhost for dev (proxy)
+const allowedOrigins = (
+	process.env.FRONTEND_ORIGINS ||
+	"https://study-notion-frontend-theta.vercel.app,http://localhost:3000"
+).split(",").map((o) => o.trim()).filter(Boolean);
+
 app.use(
 	cors({
-		origin:"https://study-notion-frontend-theta.vercel.app",
-		credentials:true,
+		origin: (origin, cb) => {
+			if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+			cb(null, false);
+		},
+		credentials: true,
 	})
-)
+);
 
 app.use(
 	fileUpload({
